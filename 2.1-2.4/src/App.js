@@ -1,10 +1,6 @@
 const Course = ({course}) =>{
-  let length = course.parts.length
-  let sum = 0
-
-  for(let i = 0; i<= length - 1; i++){
-    sum += course.parts[i].exercises
-  }
+ const sum = course.parts.reduce((previousValue, currentValue) => previousValue + currentValue.exercises, 0);
+console.log(sum);
 return (
   <div>
   <h1>{course.name}</h1>
