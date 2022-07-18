@@ -12,9 +12,13 @@ const create = newObject => {
 }
 
 const remove = (id) => {
-  console.log("In delete service");
   const request = axios.delete(`${baseUrl}/${id}`)
   return request.then(response => response.data)
 }
 
-export default { getAll, create, remove}
+const updatephone = (NewObject) => {
+  const request = axios.put(`${baseUrl}/${NewObject.id}`, NewObject)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, remove, updatephone}

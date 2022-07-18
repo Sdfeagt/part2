@@ -24,7 +24,14 @@ const App = () => {
     const Type = persons.find(person => person.name === newName)
     if (typeof(Type) === typeof(persons)) {
       event.preventDefault()
-      alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${newName} is alredy in the phonebook. Do you want to change it's phone number?`)){
+        const changedPhone = {...Type, number: phoneNo}
+        personservices
+        .updatephone(changedPhone)
+        .then(returnedPerson =>{
+          setPersons(persons.map(person => person.id !== changedPhone.id ? person : returnedPerson))
+        })
+      }
     }
     else{
     event.preventDefault()
@@ -42,30 +49,28 @@ const App = () => {
   }
 
   const handlePersonChange = (event) =>{
-    console.log(event.target.value);
     setNewName(event.target.value)
   }
   
   const handlePhoneChange = (event) =>{
-    console.log(event.target.value);
     setNewphone(event.target.value)
   }
 
   const Search = (event) =>{
     event.preventDefault()
     setShowAll(false)
-    console.log(event.target.value);
     setNewString(event.target.value)
     }
 
   const DeletePerson = (Person) =>{
-    console.log("In delete person frontend");
+    if(window.confirm(`Do you want to delete ${Person.name}?`)){
     personservices
     .remove(Person.id)
-    .then(DbAfterDel =>{
+    .then(() =>{
       console.log("Deletion succesfull");
     })
-
+    window.location.reload();
+  }
   }
 
   const PeopleToshow = showAll ? persons : persons.filter(person => person.name.includes(SearchString))

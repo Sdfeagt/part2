@@ -1,5 +1,4 @@
 const Addform = ({addPerson, newName, handlePersonChange, phoneNo, handlePhoneChange}) =>{
-    console.log(phoneNo);
     return(
         <form onSubmit={addPerson}>
         <div>name: <input value={newName} onChange={handlePersonChange}/></div>
