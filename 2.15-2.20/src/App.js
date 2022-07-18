@@ -11,6 +11,32 @@ const App = () => {
   const [phoneNo, setNewphone] = useState('')
   const [SearchString, setNewString] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [Message, setMessage] = useState(null)
+  const [error, setError] = useState(null)
+
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+  
+    return (
+      <div className='completedoperation'>
+        {message}
+      </div>
+    )
+  }
+
+  const Errormsg = ({error}) => {
+    if (error == null){
+      return null
+    }
+    return(
+      <div className='error'>
+        {error}
+        </div>
+
+    )
+  }
 
   useEffect(() => {
     personservices
@@ -25,6 +51,9 @@ const App = () => {
     if (typeof(Type) === typeof(persons)) {
       event.preventDefault()
       if(window.confirm(`${newName} is alredy in the phonebook. Do you want to change it's phone number?`)){
+        setMessage(
+          `Phone of ${Type.name} changed.`
+        )
         const changedPhone = {...Type, number: phoneNo}
         personservices
         .updatephone(changedPhone)
@@ -45,6 +74,7 @@ const App = () => {
     setNewName("")
     setNewphone("")
     })
+    setMessage(`${PersonObject.name} added to the phonebook!`)
   }
   }
 
@@ -67,8 +97,14 @@ const App = () => {
     personservices
     .remove(Person.id)
     .then(() =>{
-      console.log("Deletion succesfull");
+      setMessage("Deletion successful.")
     })
+    .catch(() =>{
+      setError(`${Person.name} has alredy been removed from the database!`)
+      setPersons(persons.filter(p => p.id !== Person.id))
+    }
+
+    )
     window.location.reload();
   }
   }
@@ -79,6 +115,8 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={Message} />
+      <Errormsg error={error}/>
       <h2>Phonebook</h2>
       <Filterform SearchString={SearchString} Search={Search}/>
       <h2>add a new</h2>

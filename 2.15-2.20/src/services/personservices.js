@@ -20,5 +20,5 @@ const updatephone = (NewObject) => {
   const request = axios.put(`${baseUrl}/${NewObject.id}`, NewObject)
   return request.then(response => response.data)
 }
-
+//eslint-disable-next-line
 export default { getAll, create, remove, updatephone}
