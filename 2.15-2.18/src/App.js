@@ -3,9 +3,7 @@ import Personstoshow from './components/Peopletoshow.js'
 import Filterform from './components/Filterform.js'
 import Addform from './components/Addform.js'
 import personservices from './services/personservices.js'
-import axios from 'axios'
 
-//Note: due to the many new topics covered, I've decided to copy the previous phonebook exercise and leave the original as is.
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -18,8 +16,6 @@ const App = () => {
     personservices
     .getAll()
       .then(personsget => {
-        console.log('promise fulfilled')
-        console.log(personsget);
         setPersons(personsget)
       })
   }, [])
@@ -62,6 +58,16 @@ const App = () => {
     setNewString(event.target.value)
     }
 
+  const DeletePerson = (Person) =>{
+    console.log("In delete person frontend");
+    personservices
+    .remove(Person.id)
+    .then(DbAfterDel =>{
+      console.log("Deletion succesfull");
+    })
+
+  }
+
   const PeopleToshow = showAll ? persons : persons.filter(person => person.name.includes(SearchString))
 
 
@@ -73,7 +79,7 @@ const App = () => {
       <h2>add a new</h2>
       <Addform addPerson={addPerson} newName={newName} handlePersonChange={handlePersonChange} phoneNo={phoneNo} handlePhoneChange={handlePhoneChange}/>  
       <h2>Numbers</h2>
-      <Personstoshow personstoshow={PeopleToshow}/>
+      <Personstoshow personstoshow={PeopleToshow} Todelete = {DeletePerson}/>
     </div>
   )
 }
